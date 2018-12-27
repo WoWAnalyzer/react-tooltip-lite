@@ -172,23 +172,24 @@ class TooltipContainer extends React.Component {
     return (
       <TagName {...others} {...props}>
         {children}
-        <Tooltip
-          direction={direction}
-          className={tooltipClassName}
-          content={content}
-          background={background}
-          color={color}
-          padding={padding}
-          eventToggle={eventToggle}
-          useHover={useHover}
-          useDefaultStyles={useDefaultStyles}
-          isOpen={showTip}
-          tipContentHover={tipContentHover}
-          arrow={arrow}
-          arrowSize={arrowSize}
-          distance={distance}
-          target={this.target.current}
-        />
+        {showTip && (
+          <Tooltip
+            direction={direction}
+            className={tooltipClassName}
+            content={content}
+            background={background}
+            color={color}
+            padding={padding}
+            eventToggle={eventToggle}
+            useHover={useHover}
+            useDefaultStyles={useDefaultStyles}
+            tipContentHover={tipContentHover}
+            arrow={arrow}
+            arrowSize={arrowSize}
+            distance={distance}
+            target={this.target.current}
+          />
+        )}
       </TagName>
     );
   }

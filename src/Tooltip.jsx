@@ -25,7 +25,6 @@ class Tooltip extends React.PureComponent {
     eventToggle: PropTypes.string,
     useHover: PropTypes.bool,
     useDefaultStyles: PropTypes.bool,
-    isOpen: PropTypes.bool,
     tipContentHover: PropTypes.bool,
     arrow: PropTypes.bool,
     arrowSize: PropTypes.number,
@@ -40,7 +39,6 @@ class Tooltip extends React.PureComponent {
     padding: '10px',
     useHover: true,
     useDefaultStyles: false,
-    isOpen: false,
     tipContentHover: false,
     arrow: true,
     arrowSize: 10,
@@ -50,6 +48,11 @@ class Tooltip extends React.PureComponent {
   constructor() {
     super();
     this.tip = React.createRef();
+  }
+
+  componentDidMount() {
+    // This is necessary because positions relies on the tooltip existing to determine the optimal location
+    this.forceUpdate();
   }
 
   tip = null;
@@ -65,7 +68,6 @@ class Tooltip extends React.PureComponent {
       background,
       color,
       useDefaultStyles,
-      isOpen,
       tipContentHover,
       arrow,
       arrowSize,
@@ -73,7 +75,7 @@ class Tooltip extends React.PureComponent {
       target,
     } = this.props;
 
-    const currentPositions = positions(direction, this.tip.current, target, { ...this.state, showTip: isOpen }, {
+    const currentPositions = positions(direction, this.tip.current, target, {
       background: useDefaultStyles ? defaultBg : background,
       arrow,
       arrowSize,

@@ -47,13 +47,13 @@ export function getArrowSpacing(props) {
 /**
  * Gets wrapper's left position for top/bottom tooltips as well as needed width restriction
  */
-function getUpDownPosition(tip, target, state, direction, alignMode, props) {
+function getUpDownPosition(tip, target, direction, alignMode, props) {
   let left = -10000000;
   let top;
 
   const arrowSpacing = getArrowSpacing(props);
 
-  if (tip && state.showTip) {
+  if (tip) {
 
     // get wrapper left position
     const scrollLeft = getScrollLeft();
@@ -104,14 +104,14 @@ function getUpDownPosition(tip, target, state, direction, alignMode, props) {
 /**
  * gets top position for left/right arrows
  */
-function getLeftRightPosition(tip, target, state, direction, alignMode, props) {
+function getLeftRightPosition(tip, target, direction, alignMode, props) {
   let left = -10000000;
   let top = 0;
 
   const arrowSpacing = getArrowSpacing(props);
   const arrowPadding = props.arrow ? minArrowPadding : 0;
 
-  if (tip && state.showTip) {
+  if (tip) {
     const scrollTop = getScrollTop();
     const scrollLeft = getScrollLeft();
     const targetRect = target.getBoundingClientRect();
@@ -157,7 +157,7 @@ function getLeftRightPosition(tip, target, state, direction, alignMode, props) {
 /**
  * sets the Arrow styles based on direction
  */
-function getArrowStyles(target, tip, direction, state, props) {
+function getArrowStyles(target, tip, direction, props) {
   if (!target || !props.arrow) {
     return {
       top: '0',
@@ -187,7 +187,7 @@ function getArrowStyles(target, tip, direction, state, props) {
 
       return {
         ...borderStyles,
-        top: (state.showTip && tip) ? (targetRect.top + scrollTop + halfTargetHeight) - props.arrowSize : '-10000000px',
+        top: tip ? (targetRect.top + scrollTop + halfTargetHeight) - props.arrowSize : '-10000000px',
         left: (targetRect.right + scrollLeft + arrowSpacing) - props.arrowSize,
       };
 
@@ -204,7 +204,7 @@ function getArrowStyles(target, tip, direction, state, props) {
 
       return {
         ...borderStyles,
-        top: (state.showTip && tip) ? (targetRect.top + scrollTop + halfTargetHeight) - props.arrowSize : '-10000000px',
+        top: tip ? (targetRect.top + scrollTop + halfTargetHeight) - props.arrowSize : '-10000000px',
         left: (targetRect.left + scrollLeft) - arrowSpacing - 1,
       };
 
@@ -222,7 +222,7 @@ function getArrowStyles(target, tip, direction, state, props) {
 
       return {
         ...borderStyles,
-        left: (state.showTip && tip) ? (targetRect.left + scrollLeft + halfTargetWidth) - props.arrowSize : '-10000000px',
+        left: tip ? (targetRect.left + scrollLeft + halfTargetWidth) - props.arrowSize : '-10000000px',
         top: (targetRect.top + scrollTop) - arrowSpacing,
       };
 
@@ -240,7 +240,7 @@ function getArrowStyles(target, tip, direction, state, props) {
 
       return {
         ...borderStyles,
-        left: (state.showTip && tip) ? (targetRect.left + scrollLeft + halfTargetWidth) - props.arrowSize : '-10000000px',
+        left: tip ? (targetRect.left + scrollLeft + halfTargetWidth) - props.arrowSize : '-10000000px',
         top: (targetRect.bottom + scrollTop + arrowSpacing) - props.arrowSize,
       };
   }
@@ -249,13 +249,13 @@ function getArrowStyles(target, tip, direction, state, props) {
 /**
  * Returns the positions style rules
  */
-export default function positions(direction, tip, target, state, props) {
+export default function positions(direction, tip, target, props) {
   const alignMode = parseAlignMode(direction);
   const trimmedDirection = direction.split('-')[0];
 
   let realDirection = trimmedDirection;
-  if (tip && state.showTip) {
-    const testArrowStyles = props.arrow && getArrowStyles(target, tip, trimmedDirection, state, props);
+  if (tip) {
+    const testArrowStyles = props.arrow && getArrowStyles(target, tip, trimmedDirection, props);
     realDirection = getDirection(trimmedDirection, tip, target, props, bodyPadding, testArrowStyles);
   }
 
@@ -263,15 +263,15 @@ export default function positions(direction, tip, target, state, props) {
 
   // force the tip to display the width we measured everything at when visible, when scrolled
   let width;
-  if (tip && state.showTip && getScrollLeft() > 0) {
+  if (tip && getScrollLeft() > 0) {
     // adding the exact width on the first render forces a bogus line break, so add 1px the first time
     const spacer = tip.style.width ? 0 : 1;
     width = Math.min(tip.offsetWidth, maxWidth) + spacer;
   }
 
   const tipPosition = (realDirection === 'up' || realDirection === 'down')
-    ? getUpDownPosition(tip, target, state, realDirection, alignMode, props)
-    : getLeftRightPosition(tip, target, state, realDirection, alignMode, props);
+    ? getUpDownPosition(tip, target, realDirection, alignMode, props)
+    : getLeftRightPosition(tip, target, realDirection, alignMode, props);
 
   return {
     tip: {
@@ -279,7 +279,7 @@ export default function positions(direction, tip, target, state, props) {
       maxWidth,
       width,
     },
-    arrow: getArrowStyles(target, tip, realDirection, state, props),
+    arrow: getArrowStyles(target, tip, realDirection, props),
     realDirection,
   };
 }

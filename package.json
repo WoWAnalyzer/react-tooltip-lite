@@ -1,5 +1,5 @@
 {
-  "name": "react-tooltip-lite",
+  "name": "@wowanalyzer/react-tooltip-lite",
   "version": "1.8.0",
   "description": "React tooltip, focused on simplicity and performance",
   "main": "dist/index.js",

@@ -132,6 +132,8 @@ class Tooltip extends React.Component {
       distance,
       ...others,
     } = this.props;
+    delete others.tagName;
+    delete others.hoverDelay;
 
     const showTip = (typeof isOpen === 'undefined') ? this.state.showTip : isOpen;
     const currentPositions = positions(direction, this.tip, this.target, { ...this.state, showTip }, {

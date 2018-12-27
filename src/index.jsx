@@ -32,6 +32,7 @@ class TooltipContainer extends React.Component {
     arrow: PropTypes.bool,
     arrowSize: PropTypes.number,
     distance: PropTypes.number,
+    renderTooltip: PropTypes.bool,
   };
   static defaultProps = {
     tagName: 'div',
@@ -49,6 +50,7 @@ class TooltipContainer extends React.Component {
     arrow: true,
     arrowSize: 10,
     distance: undefined,
+    renderTooltip: true,
   };
 
   constructor() {
@@ -133,6 +135,7 @@ class TooltipContainer extends React.Component {
       arrowSize,
       distance,
       tagName: TagName,
+      renderTooltip,
       ...others
     } = this.props;
     delete others.hoverDelay;
@@ -172,7 +175,7 @@ class TooltipContainer extends React.Component {
     return (
       <TagName {...others} {...props}>
         {children}
-        {showTip && (
+        {renderTooltip && showTip && (
           <Tooltip
             direction={direction}
             className={tooltipClassName}

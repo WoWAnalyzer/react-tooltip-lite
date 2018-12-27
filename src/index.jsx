@@ -61,6 +61,9 @@ class Tooltip extends React.Component {
 
     this.state = { showTip: false, hasHover: false, ignoreShow: false };
 
+    this.target = React.createRef();
+    this.tip = React.createRef();
+
     this.showTip = this.showTip.bind(this);
     this.hideTip = this.hideTip.bind(this);
     this.checkHover = this.checkHover.bind(this);
@@ -77,6 +80,9 @@ class Tooltip extends React.Component {
       this.setState({ isOpen: true });
     }
   }
+
+  target = null;
+  tip = null;
 
   toggleTip() {
     this.setState({ showTip: !this.state.showTip });
@@ -136,7 +142,7 @@ class Tooltip extends React.Component {
     delete others.hoverDelay;
 
     const showTip = (typeof isOpen === 'undefined') ? this.state.showTip : isOpen;
-    const currentPositions = positions(direction, this.tip, this.target, { ...this.state, showTip }, {
+    const currentPositions = positions(direction, this.tip.current, this.target.current, { ...this.state, showTip }, {
       background: useDefaultStyles ? defaultBg : background,
       arrow,
       arrowSize,
@@ -169,7 +175,7 @@ class Tooltip extends React.Component {
 
     const props = {
       style: wrapperStyles,
-      ref: (target) => { this.target = target; },
+      ref: this.target,
       className,
     };
 
@@ -209,7 +215,7 @@ class Tooltip extends React.Component {
 
         <Portal>
           <div {...portalProps} className={tooltipClassName}>
-            <span className="react-tooltip-lite" style={tipStyles} ref={(tip) => { this.tip = tip; }}>
+            <span className="react-tooltip-lite" style={tipStyles} ref={this.tip}>
               {content}
             </span>
             <span className={`react-tooltip-lite-arrow react-tooltip-lite-${currentPositions.realDirection}-arrow`} style={arrowStyles} />

@@ -1,20 +1,15 @@
 /**
- * @class Tooltip
- * @description A lightweight and responsive tooltip.
+ * @class TooltipContainer
+ * @description The container of a lightweight and responsive tooltip.
  */
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Portal from 'react-minimalist-portal';
-import positions from './position';
-
-// default colors
-const defaultColor = '#fff';
-const defaultBg = '#333';
+import Tooltip from './Tooltip';
 
 const stopProp = e => e.stopPropagation();
 
-class Tooltip extends React.Component {
+class TooltipContainer extends React.Component {
   static propTypes = {
     // eslint-disable-next-line react/no-unused-prop-types
     tagName: PropTypes.string,
@@ -143,46 +138,16 @@ class Tooltip extends React.Component {
     delete others.hoverDelay;
 
     const showTip = (typeof isOpen === 'undefined') ? this.state.showTip : isOpen;
-    const currentPositions = positions(direction, this.tip.current, this.target.current, { ...this.state, showTip }, {
-      background: useDefaultStyles ? defaultBg : background,
-      arrow,
-      arrowSize,
-      distance,
-    });
 
     const wrapperStyles = {
       position: 'relative',
       ...styles,
     };
 
-    const tipStyles = {
-      ...currentPositions.tip,
-      background: useDefaultStyles ? defaultBg : background,
-      color: useDefaultStyles ? defaultColor : color,
-      padding,
-      boxSizing: 'border-box',
-      zIndex: 1000,
-      position: 'absolute',
-      display: 'inline-block',
-    };
-
-    const arrowStyles = {
-      ...currentPositions.arrow,
-      position: 'absolute',
-      width: '0px',
-      height: '0px',
-      zIndex: 1001,
-    };
-
     const props = {
       style: wrapperStyles,
       ref: this.target,
       className,
-    };
-
-    const portalProps = {
-      // keep clicks on the tip from closing click controlled tips
-      onClick: stopProp,
     };
 
     // event handling
@@ -202,29 +167,31 @@ class Tooltip extends React.Component {
       props.onMouseOver = this.startHover;
       props.onMouseOut = tipContentHover ? this.endHover : this.hideTip;
       props.onTouchStart = this.toggleTip;
-
-      if (tipContentHover) {
-        portalProps.onMouseOver = this.startHover;
-        portalProps.onMouseOut = this.endHover;
-        portalProps.onTouchStart = stopProp;
-      }
     }
 
     return (
       <TagName {...others} {...props}>
         {children}
-
-        <Portal>
-          <div {...portalProps} className={tooltipClassName}>
-            <span className="react-tooltip-lite" style={tipStyles} ref={this.tip}>
-              {content}
-            </span>
-            <span className={`react-tooltip-lite-arrow react-tooltip-lite-${currentPositions.realDirection}-arrow`} style={arrowStyles} />
-          </div>
-        </Portal>
+        <Tooltip
+          direction={direction}
+          className={tooltipClassName}
+          content={content}
+          background={background}
+          color={color}
+          padding={padding}
+          eventToggle={eventToggle}
+          useHover={useHover}
+          useDefaultStyles={useDefaultStyles}
+          isOpen={showTip}
+          tipContentHover={tipContentHover}
+          arrow={arrow}
+          arrowSize={arrowSize}
+          distance={distance}
+          target={this.target.current}
+        />
       </TagName>
     );
   }
 }
 
-export default Tooltip;
+export default TooltipContainer;

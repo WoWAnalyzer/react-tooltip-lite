@@ -59,7 +59,10 @@ class Tooltip extends React.Component {
   constructor() {
     super();
 
-    this.state = { showTip: false, hasHover: false, ignoreShow: false };
+    this.state = {
+      showTip: false,
+      hasHover: false,
+    };
 
     this.target = React.createRef();
     this.tip = React.createRef();
@@ -98,11 +101,9 @@ class Tooltip extends React.Component {
   }
 
   startHover() {
-    if (!this.state.ignoreShow) {
-      this.setState({ hasHover: true });
+    this.setState({ hasHover: true });
 
-      setTimeout(this.checkHover, this.props.hoverDelay);
-    }
+    setTimeout(this.checkHover, this.props.hoverDelay);
   }
 
   endHover() {

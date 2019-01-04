@@ -1,4 +1,1 @@
-import TooltipElement from './TooltipElement';
-import Tooltip from './TooltipNoElement';
-
-export { Tooltip, TooltipElement };
+export { Tooltip, TooltipElement } from './Tooltip';

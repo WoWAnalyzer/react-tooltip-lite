@@ -10,15 +10,12 @@ import Tooltip from './Tooltip';
 class AttachedTooltip extends React.Component {
   static propTypes = {
     // eslint-disable-next-line react/no-unused-prop-types
-    tagName: PropTypes.string,
     direction: PropTypes.string,
-    className: PropTypes.string,
     tooltipClassName: PropTypes.string,
     content: PropTypes.node.isRequired,
     background: PropTypes.string,
     color: PropTypes.string,
     padding: PropTypes.string,
-    styles: PropTypes.object,
     eventOff: PropTypes.string,
     eventOn: PropTypes.string,
     eventToggle: PropTypes.string,
@@ -30,17 +27,13 @@ class AttachedTooltip extends React.Component {
     arrow: PropTypes.bool,
     arrowSize: PropTypes.number,
     distance: PropTypes.number,
-    renderTooltip: PropTypes.bool,
   };
   static defaultProps = {
-    tagName: 'div',
     direction: 'up',
-    className: '',
     tooltipClassName: '',
     background: '',
     color: '',
     padding: '10px',
-    styles: {},
     useHover: true,
     useDefaultStyles: false,
     hoverDelay: 200,
@@ -48,7 +41,6 @@ class AttachedTooltip extends React.Component {
     arrow: true,
     arrowSize: 10,
     distance: undefined,
-    renderTooltip: true,
   };
 
   constructor() {
@@ -114,12 +106,10 @@ class AttachedTooltip extends React.Component {
   render() {
     const {
       direction,
-      className,
       tooltipClassName,
       padding,
       children,
       content,
-      styles,
       eventOn,
       eventOff,
       eventToggle,
@@ -132,23 +122,13 @@ class AttachedTooltip extends React.Component {
       arrow,
       arrowSize,
       distance,
-      tagName: TagName,
-      renderTooltip,
       ...others
     } = this.props;
     delete others.hoverDelay;
 
     const showTip = (typeof isOpen === 'undefined') ? this.state.showTip : isOpen;
 
-    const wrapperStyles = {
-      position: 'relative',
-      ...styles,
-    };
-
-    const props = {
-      style: wrapperStyles,
-      className,
-    };
+    const props = {};
 
     // event handling
     if (eventOff) {
@@ -172,11 +152,31 @@ class AttachedTooltip extends React.Component {
     // should ensure a single child
     React.Children.only(children);
     // map other properties and most importantly, reference to the inner DOM component
-    const updatedChildren = React.Children.map(children, child => React.cloneElement(child, { innerRef: this.target, ...props, ...others }));
+    const updatedChildren = React.Children.map(children, (child) => {
+      const additionalProps = {
+        ...props,
+        ...others,
+      };
+      if (typeof child.type === 'function') {
+        // if the Tooltip is attaching to another React Component
+        // the inner React Component MUST handle the passing of the ref on its own (as well as spread other props (most importantly the events)
+        return React.cloneElement(child, {
+          innerRef: this.target,
+          ...additionalProps,
+        });
+      } else {
+        // or an HTML node
+        return React.cloneElement(child,
+          {
+            ref: this.target,
+            ...additionalProps,
+          });
+      }
+    });
     return (
       <React.Fragment>
         {updatedChildren}
-        {renderTooltip && showTip && (
+        {showTip && (
           <Tooltip
             direction={direction}
             className={tooltipClassName}

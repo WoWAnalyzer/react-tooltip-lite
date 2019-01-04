@@ -149,7 +149,7 @@ class AttachedTooltip extends React.Component {
       props.onTouchStart = this.toggleTip;
     }
 
-    // should ensure a single child
+    // should ensure a single child (throws an error instead)
     React.Children.only(children);
     // map other properties and most importantly, reference to the inner DOM component
     const updatedChildren = React.Children.map(children, (child) => {
@@ -166,11 +166,10 @@ class AttachedTooltip extends React.Component {
         });
       } else {
         // or an HTML node
-        return React.cloneElement(child,
-          {
-            ref: this.target,
-            ...additionalProps,
-          });
+        return React.cloneElement(child, {
+          ref: this.target,
+          ...additionalProps,
+        });
       }
     });
     return (

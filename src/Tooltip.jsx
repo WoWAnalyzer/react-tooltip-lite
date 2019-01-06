@@ -7,17 +7,17 @@ import PropTypes from 'prop-types';
 
 import TooltipBubble from './TooltipBubble';
 
-class Tooltip extends React.Component {
+class Tooltip extends React.PureComponent {
   static propTypes = {
     // eslint-disable-next-line react/no-unused-prop-types
     direction: PropTypes.string,
-    tooltipClassName: PropTypes.string,
+    className: PropTypes.string,
     content: PropTypes.node.isRequired,
     background: PropTypes.string,
     color: PropTypes.string,
     padding: PropTypes.string,
-    eventOff: PropTypes.string,
     eventOn: PropTypes.string,
+    eventOff: PropTypes.string,
     eventToggle: PropTypes.string,
     useHover: PropTypes.bool,
     useDefaultStyles: PropTypes.bool,
@@ -30,13 +30,13 @@ class Tooltip extends React.Component {
   };
   static defaultProps = {
     direction: 'up',
-    tooltipClassName: '',
+    className: '',
     background: '',
     color: '',
     padding: '10px',
     useHover: true,
     useDefaultStyles: false,
-    hoverDelay: 200,
+    hoverDelay: 0,
     tipContentHover: false,
     arrow: true,
     arrowSize: 10,
@@ -106,7 +106,7 @@ class Tooltip extends React.Component {
   render() {
     const {
       direction,
-      tooltipClassName,
+      className,
       padding,
       children,
       content,
@@ -149,8 +149,9 @@ class Tooltip extends React.Component {
       props.onTouchStart = this.toggleTip;
     }
 
-    // should ensure a single child (throws an error instead)
-    React.Children.only(children);
+    if (React.Children.count(children) !== 1) {
+      throw new Error('You must pass exactly one child element into Tooltip that it can attach to');
+    }
     // map other properties and most importantly, reference to the inner DOM component
     const updatedChildren = React.Children.map(children, (child) => {
       const additionalProps = {
@@ -178,7 +179,7 @@ class Tooltip extends React.Component {
         {showTip && (
           <TooltipBubble
             direction={direction}
-            className={tooltipClassName}
+            className={className}
             content={content}
             background={background}
             color={color}
@@ -198,25 +199,4 @@ class Tooltip extends React.Component {
   }
 }
 
-const TooltipElement = ({ content, children, wrapperProps, ...others }) => (
-  <Tooltip
-    content={content}
-    {...others}
-  >
-    <dfn {...wrapperProps}>
-      {children}
-    </dfn>
-  </Tooltip>
-);
-
-TooltipElement.propTypes = {
-  content: PropTypes.node.isRequired,
-  children: PropTypes.node.isRequired,
-  wrapperProps: PropTypes.object,
-};
-
-TooltipElement.defaultProps = {
-  wrapperProps: {},
-};
-
-export { Tooltip, TooltipElement };
+export default Tooltip;

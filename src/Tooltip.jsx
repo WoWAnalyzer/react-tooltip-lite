@@ -9,7 +9,6 @@ import TooltipBubble from './TooltipBubble';
 
 class Tooltip extends React.PureComponent {
   static propTypes = {
-    // eslint-disable-next-line react/no-unused-prop-types
     direction: PropTypes.string,
     className: PropTypes.string,
     content: PropTypes.node.isRequired,
@@ -150,8 +149,12 @@ class Tooltip extends React.PureComponent {
     }
 
     if (React.Children.count(children) !== 1) {
-      throw new Error('You must pass exactly one child element into Tooltip that it can attach to');
+      throw new Error('You must pass exactly one child element into Tooltip that it can attach to.');
     }
+    if (children.type.toString() === 'Symbol(react.fragment)') {
+      throw new Error('The one child element passed into Tooltip cannot be a React Fragment.');
+    }
+
     // map other properties and most importantly, reference to the inner DOM component
     const updatedChildren = React.Children.map(children, (child) => {
       const additionalProps = {
@@ -165,13 +168,12 @@ class Tooltip extends React.PureComponent {
           innerRef: this.target,
           ...additionalProps,
         });
-      } else {
-        // or an HTML node
-        return React.cloneElement(child, {
-          ref: this.target,
-          ...additionalProps,
-        });
       }
+      // or an HTML node
+      return React.cloneElement(child, {
+        ref: this.target,
+        ...additionalProps,
+      });
     });
     return (
       <React.Fragment>

@@ -1,6 +1,6 @@
 {
   "name": "@wowanalyzer/react-tooltip-lite",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "React tooltip, focused on simplicity and performance",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -17,7 +17,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bsidelinger912/react-tooltip-lite.git"
+    "url": "git+https://github.com/WoWAnalyzer/react-tooltip-lite.git"
   },
   "keywords": [
     "React"
@@ -25,9 +25,9 @@
   "author": "Ben Sidelinger",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/bsidelinger912/react-tooltip-lite/issues"
+    "url": "https://github.com/WoWAnalyzer/react-tooltip-lite/issues"
   },
-  "homepage": "https://github.com/bsidelinger912/react-tooltip-lite#readme",
+  "homepage": "https://github.com/WoWAnalyzer/react-tooltip-lite#readme",
   "dependencies": {
     "prop-types": "^15.5.8",
     "react-minimalist-portal": "2.3.1"

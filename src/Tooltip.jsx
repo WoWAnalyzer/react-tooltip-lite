@@ -194,6 +194,8 @@ class Tooltip extends React.PureComponent {
             arrowSize={arrowSize}
             distance={distance}
             target={this.target.current}
+            startHover={this.startHover}
+            endHover={this.endHover}
           />
         )}
       </React.Fragment>

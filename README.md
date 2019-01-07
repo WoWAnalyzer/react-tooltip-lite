@@ -27,9 +27,36 @@ import Tooltip from 'react-tooltip-lite';
 
 **CodePen demo**: [http://codepen.io/bsidelinger912/pen/WOdPNK](http://codepen.io/bsidelinger912/pen/WOdPNK)
 
-<br />
+#### Important note about contents
+`@wowanalyzer/react-tooltip-lite` *needs* a **single** element to attach to. This element can be either:
 
-### styling
+1. React component (`<Link>` for example, or your custom components)
+2. HTML elements like `<div>`
+
+It cannot be a `React.Fragment` because then it won't have a target to attach to. In the same sense, it can't be a plain text or text mixed with other JSX, then it needs a wrapper element. 
+
+If you wish to put a tooltip on a custom React component, you need to make sure it spreads other properties and sets `ref` property on some element, like here:
+```javascript
+class SomeComponent extends React.Component {
+  render() {
+    const { innerRef, ...others } = this.props;
+    return (
+      <div 
+        ref={innerRef} 
+        {...others}
+      >
+        Hello
+      </div>
+    );
+  }
+}
+
+<Tooltip content="Hello">
+  <SomeComponent />
+</Tooltip>
+```
+`innerRef` needs to be specifically deconstructed from `this.props` and set as a `ref` parameter on some element, same with `...others` (it contains the mouseover/toggle events for the tooltip).
+### Styling
 By default you need to style react-tooltip-lite with CSS, this allows for psuedo elements and some cool border tricks, as well as using css/sass/less variables and such to keep your colors consistent. (Note: as of version 1.2.0 you can also pass the "useDefaultStyles" prop which will allow you to use react-tooltip-lite without a stylesheet.)  
 
 Since the tooltip's arrow is created using the css border rule (https://css-tricks.com/snippets/css/css-triangle/), you'll want to specify the border-color for the arrow to set it's color. 
@@ -66,11 +93,6 @@ You can pass in props to define tip direction, styling, etc.  Content is the onl
       <td>the contents of your hover target</td>
     </tr>
     <tr>
-      <td>tagName</td>
-      <td>string</td>
-      <td>html tag used for className</td>
-    </tr>
-    <tr>
       <td>direction</td>
       <td>string</td>
       <td>the tip direction, defaults to up.   Possible values are "up", "down", "left", "right" with optional modifer for alignment of "start" and "end".    e.g. "left-start" will attempt tooltip on left and align it with the start of the target.   If alignment modifier is not specified the default behavior is to align "middle".</td>
@@ -78,7 +100,7 @@ You can pass in props to define tip direction, styling, etc.  Content is the onl
     <tr>
       <td>className</td>
       <td>string</td>
-      <td>css class added to the rendered wrapper</td>
+      <td>css class added to the rendered tooltip</td>
     </tr>
     <tr>
       <td>background</td>
@@ -94,11 +116,6 @@ You can pass in props to define tip direction, styling, etc.  Content is the onl
       <td>padding</td>
       <td>string</td>
       <td>padding amount for the tooltip contents (defaults to '10px')</td>
-    </tr>
-    <tr>
-      <td>styles</td>
-      <td>object</td>
-      <td>style overrides for the target wrapper</td>
     </tr>
     <tr>
       <td>eventOn</td>
@@ -139,7 +156,7 @@ You can pass in props to define tip direction, styling, etc.  Content is the onl
     <tr>
       <td>hoverDelay</td>
       <td>number</td>
-      <td>the number of milliseconds to determine hover intent, defaults to 200</td>
+      <td>the number of milliseconds to determine hover intent, defaults to 0</td>
     </tr>
     <tr>
       <td>arrow</td>
@@ -177,10 +194,10 @@ You can pass in props to define tip direction, styling, etc.  Content is the onl
       </div>
   )}
   direction="right"
-  tagName="span"
-  className="target"
 >
-    Target content for big html tip
+    <span>
+        Target content for big html tip
+    </span>
 </Tooltip>
 ```
 

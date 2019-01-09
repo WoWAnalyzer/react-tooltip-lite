@@ -56,6 +56,8 @@ class SomeComponent extends React.Component {
 </Tooltip>
 ```
 `innerRef` needs to be specifically deconstructed from `this.props` and set as a `ref` parameter on some element, same with `...others` (it contains the mouseover/toggle events for the tooltip).
+
+Alternatively, you can wrap the component in `<div>` or `<span>` element.
 ### Styling
 By default you need to style react-tooltip-lite with CSS, this allows for psuedo elements and some cool border tricks, as well as using css/sass/less variables and such to keep your colors consistent. (Note: as of version 1.2.0 you can also pass the "useDefaultStyles" prop which will allow you to use react-tooltip-lite without a stylesheet.)  
 

@@ -30,6 +30,8 @@ class TooltipBubble extends React.PureComponent {
     arrowSize: PropTypes.number,
     distance: PropTypes.number,
     target: PropTypes.object,
+    startHover: PropTypes.func,
+    endHover: PropTypes.func,
   };
   static defaultProps = {
     direction: 'up',
@@ -73,6 +75,8 @@ class TooltipBubble extends React.PureComponent {
       arrowSize,
       distance,
       target,
+      startHover,
+      endHover
     } = this.props;
 
     const currentPositions = positions(direction, this.tip.current, target, {
@@ -107,8 +111,8 @@ class TooltipBubble extends React.PureComponent {
     };
 
     if (!eventToggle && useHover && tipContentHover) {
-      portalProps.onMouseOver = this.startHover;
-      portalProps.onMouseOut = this.endHover;
+      portalProps.onMouseOver = startHover;
+      portalProps.onMouseOut = endHover;
       portalProps.onTouchStart = stopProp;
     }
 

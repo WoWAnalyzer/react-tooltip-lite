@@ -143,8 +143,8 @@ class Tooltip extends React.PureComponent {
 
       // only use hover if they don't have a toggle event
     } else if (useHover) {
-      props.onMouseOver = this.startHover;
-      props.onMouseOut = tipContentHover ? this.endHover : this.hideTip;
+      props.onMouseEnter = this.startHover;
+      props.onMouseLeave = tipContentHover ? this.endHover : this.hideTip;
       props.onTouchStart = this.toggleTip;
     }
 

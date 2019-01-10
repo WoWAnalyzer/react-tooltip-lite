@@ -111,8 +111,8 @@ class TooltipBubble extends React.PureComponent {
     };
 
     if (!eventToggle && useHover && tipContentHover) {
-      portalProps.onMouseOver = startHover;
-      portalProps.onMouseOut = endHover;
+      portalProps.onMouseEnter = startHover;
+      portalProps.onMouseLeave = endHover;
       portalProps.onTouchStart = stopProp;
     }
 

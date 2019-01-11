@@ -1,6 +1,6 @@
 {
   "name": "@wowanalyzer/react-tooltip-lite",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "React tooltip, focused on simplicity and performance",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

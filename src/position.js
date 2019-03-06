@@ -157,12 +157,9 @@ function getLeftRightPosition(tip, target, direction, alignMode, props) {
 /**
  * sets the Arrow styles based on direction
  */
-function getArrowStyles(target, tip, direction, props) {
-  if (!target || !props.arrow) {
-    return {
-      top: '0',
-      left: '-10000000px',
-    };
+function getArrowStyles(target, direction, props) {
+  if (!target) {
+    return null;
   }
 
   const targetRect = target.getBoundingClientRect();
@@ -187,7 +184,7 @@ function getArrowStyles(target, tip, direction, props) {
 
       return {
         ...borderStyles,
-        top: tip ? (targetRect.top + scrollTop + halfTargetHeight) - props.arrowSize : '-10000000px',
+        top: (targetRect.top + scrollTop + halfTargetHeight) - props.arrowSize,
         left: (targetRect.right + scrollLeft + arrowSpacing) - props.arrowSize,
       };
 
@@ -204,7 +201,7 @@ function getArrowStyles(target, tip, direction, props) {
 
       return {
         ...borderStyles,
-        top: tip ? (targetRect.top + scrollTop + halfTargetHeight) - props.arrowSize : '-10000000px',
+        top: (targetRect.top + scrollTop + halfTargetHeight) - props.arrowSize,
         left: (targetRect.left + scrollLeft) - arrowSpacing - 1,
       };
 
@@ -222,7 +219,7 @@ function getArrowStyles(target, tip, direction, props) {
 
       return {
         ...borderStyles,
-        left: tip ? (targetRect.left + scrollLeft + halfTargetWidth) - props.arrowSize : '-10000000px',
+        left: Math.min(getScrollLeft() + getTipMaxWidth() - bodyPadding, (targetRect.left + scrollLeft + halfTargetWidth) - props.arrowSize),
         top: (targetRect.top + scrollTop) - arrowSpacing,
       };
 
@@ -240,7 +237,7 @@ function getArrowStyles(target, tip, direction, props) {
 
       return {
         ...borderStyles,
-        left: tip ? (targetRect.left + scrollLeft + halfTargetWidth) - props.arrowSize : '-10000000px',
+        left: Math.min(getScrollLeft() + getTipMaxWidth() - bodyPadding, (targetRect.left + scrollLeft + halfTargetWidth) - props.arrowSize),
         top: (targetRect.bottom + scrollTop + arrowSpacing) - props.arrowSize,
       };
   }
@@ -255,7 +252,7 @@ export default function positions(direction, tip, target, props) {
 
   let realDirection = trimmedDirection;
   if (tip) {
-    const testArrowStyles = props.arrow && getArrowStyles(target, tip, trimmedDirection, props);
+    const testArrowStyles = props.arrow && getArrowStyles(target, trimmedDirection, props);
     realDirection = getDirection(trimmedDirection, tip, target, props, bodyPadding, testArrowStyles);
   }
 
@@ -279,7 +276,7 @@ export default function positions(direction, tip, target, props) {
       maxWidth,
       width,
     },
-    arrow: getArrowStyles(target, tip, realDirection, props),
+    arrow: tip && props.arrow ? getArrowStyles(target, realDirection, props) : null,
     realDirection,
   };
 }

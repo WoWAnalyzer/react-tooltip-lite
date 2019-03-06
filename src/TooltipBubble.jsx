@@ -97,14 +97,6 @@ class TooltipBubble extends React.PureComponent {
       display: 'inline-block',
     };
 
-    const arrowStyles = {
-      ...currentPositions.arrow,
-      position: 'absolute',
-      width: '0px',
-      height: '0px',
-      zIndex: 1001,
-    };
-
     const portalProps = {
       // keep clicks on the tip from closing click controlled tips
       onClick: stopProp,
@@ -122,7 +114,18 @@ class TooltipBubble extends React.PureComponent {
           <span className="react-tooltip-lite" style={tipStyles} ref={this.tip}>
             {content}
           </span>
-          <span className={`react-tooltip-lite-arrow react-tooltip-lite-${currentPositions.realDirection}-arrow`} style={arrowStyles} />
+          {currentPositions.arrow && (
+            <span
+              className={`react-tooltip-lite-arrow react-tooltip-lite-${currentPositions.realDirection}-arrow`}
+              style={{
+                ...currentPositions.arrow,
+                position: 'absolute',
+                width: 0,
+                height: 0,
+                zIndex: 1001,
+              }}
+            />
+          )}
         </div>
       </Portal>
     );

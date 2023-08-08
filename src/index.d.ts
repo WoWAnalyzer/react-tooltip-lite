@@ -1,4 +1,4 @@
-declare module 'react-tooltip-lite' {
+declare module '@wowanalyzer/react-tooltip-lite' {
 
   import * as React from 'react';
 

@@ -13,11 +13,11 @@ const noArrowDistance = 3;
  * cross browser scroll positions
  */
 function getScrollTop() {
-  return window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+  return window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
 }
 
 export function getScrollLeft() {
-  return window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft || 0;
+  return window.scrollX || document.documentElement.scrollLeft || document.body.scrollLeft || 0;
 }
 
 /**

@@ -94,7 +94,7 @@ export default function getDirection(currentDirection, tip, target, props, bodyP
         if (hasSpaceAbove) {
           return 'up';
 
-          // if there's not space above or below, check if there would be space left or right
+          // if there's no space above or below, check if there would be space left or right
         } else if (checkLeftRightWidthSufficient(tip, target, arrowSpacing, bodyPadding)) {
           return getDirection('right', tip, target, arrowSpacing, bodyPadding, arrowStyles, true);
         }

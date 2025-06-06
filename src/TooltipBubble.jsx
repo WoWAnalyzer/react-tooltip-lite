@@ -5,7 +5,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Portal from 'react-minimalist-portal';
+import Portal from './Portal';
 import positions from './position';
 
 // default colors
@@ -76,7 +76,7 @@ class TooltipBubble extends React.PureComponent {
       distance,
       target,
       startHover,
-      endHover
+      endHover,
     } = this.props;
 
     const currentPositions = positions(direction, this.tip.current, target, {
